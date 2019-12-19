@@ -7,7 +7,7 @@
   
   ## Nom du projet
 
-  ##### Cartes pour des restaurants
+  ##### Un gestionnaire de menus / cartes pour des restaurants
 
 ## Description
 
