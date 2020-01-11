@@ -1,6 +1,8 @@
 <template>
 <div>
-  <h1>Detail du restaurant d'id = {{id}}</h1>
+  <h1>Detail du restaurant / ID = {{id}}</h1>
+  <h1>Detail du restaurant / Nom = {{name}}</h1>
+  <h1>Detail du restaurant / Cuisine = {{cuisine}}</h1>
   </div>
 </template>
 
@@ -14,6 +16,15 @@ export default {
         // dans le code
       return this.$route.params.id
       
+    },
+    // pour le nom de la restau
+    name() {
+      return this.$route.params.name
+      
+    },
+    // pour la cuisine 
+    cuisine() {
+      return this.$route.params.cuisine
     }
   },
 
@@ -25,7 +36,11 @@ export default {
   mounted() {
     console.log("AVANT AFFICHAGE !");
     console.log("On va chercher les détails du restaurant id = " + this.$route.params.id)
+    console.log("On va chercher les détails du restaurant cuisine = " + this.$route.params.name)
+    console.log("On va chercher les détails du restaurant cuisine = " + this.$route.params.cuisine)
     console.log("ID = " + this.id);
+    console.log("ID = " + this.name);
+    console.log("Cuisine = " + this.cuisine);
   },
   methods: {
     getDataFromServer() {
