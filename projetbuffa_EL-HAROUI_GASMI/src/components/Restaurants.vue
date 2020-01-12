@@ -1,12 +1,18 @@
+
+
 <template>
+
 <div>
-  <p>
+    <p>
     Rechercher par nom:
-    <input type="text" v-model="nomRecherche" v-on:input="getDataFromServer()" />
+    <input class="form-control" type="text" v-model="nomRecherche" v-on:input="getDataFromServer()" />
   </p>
+
+
   <p>
     Nombre de restaurants par page :
     <input
+      class="custom-range form-control"
       type="range"
       min="2"
       max="100"
@@ -16,9 +22,41 @@
     />
     {{pagesize}}
   </p>
+  
+      <div class="row">
+      <div class="col-8">
+      <form v-on:submit="methodForm(event);">
+          <div style="border: 1px" class="form-group">
+            <label>Nom :</label>
+            <input required class="form-control" name="nom" id="nom" type="text" v-model="name">
+          </div>
+
+          <div class="form-group">
+            <label>Cuisine :</label>
+            <input
+              required
+              class="form-control"
+              name="cuisine"
+              id="cuisine"
+              type="text"
+              v-model="cuisine"
+            >
+            <input type="hidden" name="ids" v-model="ids" id="ids">
+          </div>
+
+          <div class="form-group">
+            <button class="form-control btn btn-success">Ajouter</button>
+          </div>
+      </form>
+
   <h1>Nombre de restaurants : {{nbRestaurants}}</h1>
-  <button v-on:click="pagePrecedente()" v-bind:disabled="page==0">Précédent</button>
-  <button v-on:click="pageSuivante()" :disabled="page == nbPagesDeResultats">Suivant</button>
+  <button class="btn btn-warning" v-on:click="premierePage()">Première page</button>
+  <button class="btn btn-info" v-on:click="pagePrecedente()" v-bind:disabled="page==0">Précédent</button>
+  <button class="btn btn-info" v-on:click="pageSuivante()" :disabled="page == nbPagesDeResultats">Suivant</button>
+  <button class="btn btn-warning" v-on:click="dernierePage()">Dernière Page</button> <br><br>
+
+        </div>
+      </div>
  
   <H1>TABLE VUE-MATERIAL</H1>
         <md-table v-model="restaurants" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
@@ -37,15 +75,17 @@
         :md-description="`No user found for this '${nomRecherche}' query. Try a different search term or create a new user.`">
       </md-table-empty-state>
 
-            
 
-            <md-table-row slot="md-table-row" slot-scope="{ item }">
-                <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-                <md-table-cell md-label="location" md-sort-by="borough">{{ item.borough }}</md-table-cell>
-                <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
-                <md-table-cell md-label="Details"><router-link :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough+'/'+item.address.building">Details</router-link></md-table-cell>
-            </md-table-row>
-        </md-table>
+          
+      <md-table-row class="test" slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
+        <md-table-cell md-label="location" md-sort-by="borough">{{ item.borough }}</md-table-cell>
+        <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
+        <md-table-cell md-label="Details"><router-link :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough">Details</router-link></md-table-cell>
+        <md-table-cell md-label="Supprimer"><button  class="btn btn-danger" title="Supprimer" v-on:click="supprimerRestaurant(item._id)" href > Supprimer </button></md-table-cell>          
+       </md-table-row>
+    </md-table>
+>>>>>>> 1df333430c9613418eb3cbed9e40092533fd818e
   </div>
 </template>
 
@@ -102,7 +142,7 @@ export default {
     },
 
 
-    ajouterRestaurant(event) {
+    /*ajouterRestaurant(event) {
       // eviter le comportement par defaut
       event.preventDefault();
 
@@ -112,7 +152,36 @@ export default {
       });
       this.nom = "";
       this.cuisine = "";
+    },*/
+
+    ajouterRestaurant: function(event) {
+      event.preventDefault();
+
+      let form = event.target;
+
+      let donneesFormulaire = new FormData(form);
+
+      let url = "http://localhost:8080/api/restaurants";
+
+      fetch(url, {
+        method: "POST",
+        body: donneesFormulaire
+      })
+        .then(responseJSON => {
+          responseJSON.json().then(res => {
+            // Maintenant res est un vrai objet JavaScript
+            console.log(res);
+            this.name = "";
+            this.cuisine = "";
+            this.getDataFromServer();
+            //console.log("Ajouté !");
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     },
+
 
     getColor(index) {
       return index % 2 ? "lightBlue" : "pink";
@@ -126,12 +195,32 @@ export default {
       console.log("Page precedente");
       this.page--;
       this.getDataFromServer();
-    }
+    },
+
+    /* Premiere page */
+    premierePage(){
+      this.page = 0;
+      this.getDataFromServer();
+    },
+
+    /* Derniere page*/
+    dernierePage(){
+      this.page =
+        this.nbRestaurants % this.pagesize > 0
+          ? parseInt(this.nbRestaurants / this.pagesize, 10) 
+          : parseInt(this.nbRestaurants / this.pagesize, 10);
+      this.getDataFromServer();
+    },
+
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.test {
+    background-color: blue;
+}
 
 </style>

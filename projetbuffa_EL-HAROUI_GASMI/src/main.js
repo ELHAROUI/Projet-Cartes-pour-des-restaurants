@@ -8,10 +8,20 @@ import Restaurants from "./components/Restaurants.vue";
 import RestaurantDetail from "./components/RestaurantDetail.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+
+
+
 // configs...
 Vue.use(VueMaterial)
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+
+Vue.use(BootstrapVue);
+
 
 // config du router :
 const router = new VueRouter({
