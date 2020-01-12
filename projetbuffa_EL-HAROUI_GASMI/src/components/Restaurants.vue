@@ -17,8 +17,10 @@
     {{pagesize}}
   </p>
   <h1>Nombre de restaurants : {{nbRestaurants}}</h1>
+  <button class="btn btn-danger" v-on:click="premierePage()">Première page</button>
   <button v-on:click="pagePrecedente()" v-bind:disabled="page==0">Précédent</button>
   <button v-on:click="pageSuivante()" :disabled="page == nbPagesDeResultats">Suivant</button>
+  <button class="btn btn-danger" v-on:click="dernierePage()">Dernière Page</button>
  
   <H1>TABLE VUE-MATERIAL</H1>
         <md-table v-model="restaurants" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
@@ -125,7 +127,22 @@ export default {
       console.log("Page precedente");
       this.page--;
       this.getDataFromServer();
-    }
+    },
+
+    /* Premiere page */
+    premierePage(){
+      this.page = 0;
+      this.getDataFromServer();
+    },
+
+    /* Derniere page*/
+    dernierePage(){
+      this.page =
+        this.nbRestaurants % this.pagesize > 0
+          ? parseInt(this.nbRestaurants / this.pagesize, 10) 
+          : parseInt(this.nbRestaurants / this.pagesize, 10);
+      this.getDataFromServer();
+    },
   }
 };
 </script>
