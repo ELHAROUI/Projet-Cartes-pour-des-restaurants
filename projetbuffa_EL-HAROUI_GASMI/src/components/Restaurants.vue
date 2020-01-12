@@ -74,18 +74,15 @@
         md-label="No users found"
         :md-description="`No user found for this '${nomRecherche}' query. Try a different search term or create a new user.`">
       </md-table-empty-state>
-
-
-          
-      <md-table-row class="test" slot="md-table-row" slot-scope="{ item }">
+ 
+     <md-table-row class="test" slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="location" md-sort-by="borough">{{ item.borough }}</md-table-cell>
         <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
-        <md-table-cell md-label="Details"><router-link :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough">Details</router-link></md-table-cell>
+         <md-table-cell md-label="Details"><router-link :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough+'/'+item.address.building">Details</router-link></md-table-cell>
         <md-table-cell md-label="Supprimer"><button  class="btn btn-danger" title="Supprimer" v-on:click="supprimerRestaurant(item._id)" href > Supprimer </button></md-table-cell>          
        </md-table-row>
     </md-table>
->>>>>>> 1df333430c9613418eb3cbed9e40092533fd818e
   </div>
 </template>
 
