@@ -1,87 +1,108 @@
-
-
 <template>
+  <div>
+    <div class="border1">
+      <p>
+        <label>Rechercher par nom:</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="nomRecherche"
+          v-on:input="getDataFromServer()"
+        />
+      </p>
 
-<div>
-    <p>
-    Rechercher par nom:
-    <input class="form-control" type="text" v-model="nomRecherche" v-on:input="getDataFromServer()" />
-  </p>
+      <p>
+        <label>Nombre de restaurants par page :</label>
+        <input
+          class="custom-range form-control"
+          type="range"
+          min="2"
+          max="100"
+          value="10"
+          v-on:input="getDataFromServer()"
+          v-model="pagesize"
+        />
+        {{pagesize}}
+      </p>
+    </div>
 
-
-  <p>
-    Nombre de restaurants par page :
-    <input
-      class="custom-range form-control"
-      type="range"
-      min="2"
-      max="100"
-      value="10"
-      v-on:input="getDataFromServer()"
-      v-model="pagesize"
-    />
-    {{pagesize}}
-  </p>
-  
-      <div class="row">
-      <div class="col-8">
+    <br />
+    <div class="border2">
       <form v-on:submit="methodForm(event);">
-          <div style="border: 1px" class="form-group">
-            <label>Nom :</label>
-            <input required class="form-control" name="nom" id="nom" type="text" v-model="name">
-          </div>
+        <div class="form-group">
+          <label>Nom :</label>
+          <input required class="form-control" name="nom" id="nom" type="text" v-model="name" />
+        </div>
 
-          <div class="form-group">
-            <label>Cuisine :</label>
-            <input
-              required
-              class="form-control"
-              name="cuisine"
-              id="cuisine"
-              type="text"
-              v-model="cuisine"
-            >
-            <input type="hidden" name="ids" v-model="ids" id="ids">
-          </div>
+        <div class="form-group">
+          <label>Cuisine :</label>
+          <input
+            required
+            class="form-control"
+            name="cuisine"
+            id="cuisine"
+            type="text"
+            v-model="cuisine"
+          />
+          <input type="hidden" name="ids" v-model="ids" id="ids" />
+        </div>
 
-          <div class="form-group">
-            <button class="form-control btn btn-success">Ajouter</button>
-          </div>
+        <div class="form-group">
+          <button class="form-control btn btn-success">Ajouter</button>
+        </div>
       </form>
 
-  <h1>Nombre de restaurants : {{nbRestaurants}}</h1>
-  <button class="btn btn-warning" v-on:click="premierePage()">Première page</button>
-  <button class="btn btn-info" v-on:click="pagePrecedente()" v-bind:disabled="page==0">Précédent</button>
-  <button class="btn btn-info" v-on:click="pageSuivante()" :disabled="page == nbPagesDeResultats">Suivant</button>
-  <button class="btn btn-warning" v-on:click="dernierePage()">Dernière Page</button> <br><br>
+      <h1>Nombre de restaurants : {{nbRestaurants}}</h1>
+      <button class="btn btn-warning" v-on:click="premierePage()">Première page</button>
+      <button class="btn btn-info" v-on:click="pagePrecedente()" v-bind:disabled="page==0">Précédent</button>
+      <button
+        class="btn btn-info"
+        v-on:click="pageSuivante()"
+        :disabled="page == nbPagesDeResultats"
+      >Suivant</button>
+      <button class="btn btn-warning" v-on:click="dernierePage()">Dernière Page</button>
+      <br />
+      <br />
+    </div>
 
+    <H1>TABLE VUE-MATERIAL</H1>
+    <md-table v-model="restaurants" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+      <md-table-toolbar>
+        <div class="md-toolbar-section-start">
+          <h1 class="md-title">Trier par nom de restaurant</h1>
         </div>
-      </div>
- 
-  <H1>TABLE VUE-MATERIAL</H1>
-        <md-table v-model="restaurants" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
-            <md-table-toolbar>
-                <div class="md-toolbar-section-start">
-                    <h1 class="md-title">Nom cherche</h1>
-                </div>
 
-                <md-field md-clearable class="md-toolbar-section-end">
-                    <md-input placeholder="Search by name..." v-model="nomRecherche" @input="getDataFromServer()" />
-                </md-field>
-            </md-table-toolbar>
+        <md-field md-clearable class="md-toolbar-section-end">
+          <md-input
+            placeholder="Search by name..."
+            v-model="nomRecherche"
+            @input="getDataFromServer()"
+          />
+        </md-field>
+      </md-table-toolbar>
 
-            <md-table-empty-state
+      <md-table-empty-state
         md-label="No users found"
-        :md-description="`No user found for this '${nomRecherche}' query. Try a different search term or create a new user.`">
-      </md-table-empty-state>
+        :md-description="`No user found for this '${nomRecherche}' query. Try a different search term or create a new user.`"
+      ></md-table-empty-state>
 
-          
-      <md-table-row class="test" slot="md-table-row" slot-scope="{ item }">
+      <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
-        <md-table-cell md-label="Details"><router-link :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough">Details</router-link></md-table-cell>
-        <md-table-cell md-label="Supprimer"><button  class="btn btn-danger" title="Supprimer" v-on:click="supprimerRestaurant(item._id)" href > Supprimer </button></md-table-cell>          
-       </md-table-row>
+        <md-table-cell md-label="Details">
+          <router-link
+            :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough"
+          >Details</router-link>
+        </md-table-cell>
+        <md-table-cell md-label="Supprimer">
+          <button
+            class="btn btn-danger"
+            title="Supprimer"
+            v-on:click="supprimerRestaurant(item._id)"
+            href
+          >Supprimer</button>
+        </md-table-cell>
+      </md-table-row>
     </md-table>
   </div>
 </template>
@@ -138,7 +159,6 @@ export default {
       this.restaurants.splice(index, 1);
     },
 
-
     /*ajouterRestaurant(event) {
       // eviter le comportement par defaut
       event.preventDefault();
@@ -179,7 +199,6 @@ export default {
         });
     },
 
-
     getColor(index) {
       return index % 2 ? "lightBlue" : "pink";
     },
@@ -195,29 +214,35 @@ export default {
     },
 
     /* Premiere page */
-    premierePage(){
+    premierePage() {
       this.page = 0;
       this.getDataFromServer();
     },
 
     /* Derniere page*/
-    dernierePage(){
+    dernierePage() {
       this.page =
         this.nbRestaurants % this.pagesize > 0
-          ? parseInt(this.nbRestaurants / this.pagesize, 10) 
+          ? parseInt(this.nbRestaurants / this.pagesize, 10)
           : parseInt(this.nbRestaurants / this.pagesize, 10);
       this.getDataFromServer();
-    },
-
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.test {
-    background-color: blue;
+.border1,
+.border2 {
+  width: 50%;
+  margin: 0 auto;
+}
+.border1 {
+  border-bottom: 2px solid red;
 }
 
+input {
+  width: 100%;
+}
 </style>
