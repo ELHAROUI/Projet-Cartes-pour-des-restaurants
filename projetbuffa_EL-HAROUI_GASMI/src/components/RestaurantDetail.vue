@@ -5,6 +5,9 @@
   <h3>Nom du restaurant : {{name}}</h3>
   <h3>Type de cuisine : {{cuisine}}</h3>
   <h3>situé a : {{borough}}</h3>
+  <h3>adresse : {{building}}</h3>
+
+  
   </div>
 </template>
 
@@ -32,6 +35,9 @@ export default {
       return this.$route.params.borough
     }
   },
+      building() {
+      return this.$route.params.address.building
+    },
 
   data: function() {
     return {
