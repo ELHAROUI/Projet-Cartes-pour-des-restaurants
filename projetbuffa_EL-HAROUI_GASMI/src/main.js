@@ -38,7 +38,7 @@ const router = new VueRouter({
       component: Restaurants 
     },
     { 
-      path: '/restaurant/:id/:name/:cuisine/:borough/:grades', 
+      path: '/restaurant/:id/:name/:cuisine/:borough/:date0/:grade0/:score0/:street/:longitude/:latitude/:date1/:grade1/:score1', 
       component: RestaurantDetail 
     },
   ],
