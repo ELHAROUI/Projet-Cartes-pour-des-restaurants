@@ -27,8 +27,9 @@
     </div>
 
     <br />
-    <div class="border2">
-      <form v-on:submit="methodForm(event);">
+    <div class="border1">
+      <form id="formulaireAjout" v-on:submit="postRequest(event);">
+         <legend>Ajout d'un restaurant</legend>
         <div class="form-group">
           <label>Nom :</label>
           <input required class="form-control" name="nom" id="nom" type="text" v-model="name" />
@@ -49,6 +50,52 @@
 
         <div class="form-group">
           <button class="form-control btn btn-success">Ajouter</button>
+        </div>
+      </form>
+    </div>
+    <div class="border2">
+
+      <!-- Formulaire modfification -->
+      <form id="formulaireModification" onsubmit="putRequest(event);">
+        <legend>Modification d'un restaurant</legend>
+
+        <div class="form-group">
+          <label>Id :</label>
+          <input
+            required
+            class="form-control"
+            name="_id"
+            type="text"
+            placeholder="Id du restaurant à modifier"
+            v-model="id"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Nom:</label>
+          <input
+            required
+            class="form-control"
+            name="nom"
+            type="text"
+            placeholder="Michel's restaurant"
+            v-model="name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Cuisine :</label>
+          <input
+            required
+            class="form-control"
+            name="cuisine"
+            type="text"
+            placeholder="Cuisine française"
+            v-model="cuisine"
+          />
+        </div>
+        <div class="form-group">
+          <button class="form-control btn btn-success">modifier ce restaurant</button>
         </div>
       </form>
 
@@ -159,18 +206,6 @@ export default {
       this.restaurants.splice(index, 1);
     },
 
-    /*ajouterRestaurant(event) {
-      // eviter le comportement par defaut
-      event.preventDefault();
-
-      this.restaurants.push({
-        nom: this.nom,
-        cuisine: this.cuisine
-      });
-      this.nom = "";
-      this.cuisine = "";
-    },*/
-
     getColor(index) {
       return index % 2 ? "lightBlue" : "pink";
     },
@@ -198,6 +233,80 @@ export default {
           ? parseInt(this.nbRestaurants / this.pagesize, 10)
           : parseInt(this.nbRestaurants / this.pagesize, 10);
       this.getDataFromServer();
+    },
+
+    /*Pour l'ajout */
+    postRequest(event) {
+      event.preventDefault();
+      let form = event.target;
+      let donneesFormulaire = new FormData(form);
+
+      let url = "/api/restaurants";
+
+      fetch(url, {
+        method: "POST",
+        body: donneesFormulaire
+      })
+        .then(function(responseJSON) {
+          responseJSON.json().then(function(res) {
+            let div = document.querySelector("#reponsePOST");
+            div.innerHTML = res.msg;
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },
+
+    // REQUETES GET
+    /*getRequest1() {
+      let url = "/api/restaurants";
+
+      fetch(url)
+        .then(function(responseJSON) {
+          responseJSON.json().then(function(res) {
+            // Maintenant res est un vrai objet JavaScript
+            afficheReponseGET(res);
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    },*/
+/*afficheReponsePUT(reponse) {
+      let div = document.querySelector("#reponsePUT");
+      div.innerHTML = reponse.msg;
+
+      // On affiche le tableau à jour
+      //getRequest1();
+    },*/
+
+    // REQUETES PUT
+    putRequest(event) {
+      event.preventDefault();
+
+      let form = event.target;
+
+      let donneesFormulaire = new FormData(event.target);
+
+      let id = form._id.value;
+
+      let url = "/api/restaurants/" + id;
+
+      fetch(url, {
+        method: "PUT",
+        body: donneesFormulaire
+      })
+        .then(function(responseJSON) {
+          responseJSON.json().then(function(res) {
+            // Maintenant res est un vrai objet JavaScript
+            let div = document.querySelector("#reponsePUT");
+            div.innerHTML = res.msg;
+          });
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     }
   }
 };
@@ -212,6 +321,11 @@ export default {
 }
 .border1 {
   border-bottom: 2px solid red;
+}
+
+.border3 {
+   float: left;
+    clear: none;
 }
 
 input {

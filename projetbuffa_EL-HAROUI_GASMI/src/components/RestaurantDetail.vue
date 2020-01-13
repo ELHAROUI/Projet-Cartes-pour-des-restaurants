@@ -5,6 +5,7 @@
   <h3>Nom du restaurant : {{name}}</h3>
   <h3>Type de cuisine : {{cuisine}}</h3>
   <h3>situé a : {{borough}}</h3>
+  
 
   
   </div>
