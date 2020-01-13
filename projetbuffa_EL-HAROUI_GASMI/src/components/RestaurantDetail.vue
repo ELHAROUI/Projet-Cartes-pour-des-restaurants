@@ -5,7 +5,10 @@
   <h3>Nom du restaurant : {{name}}</h3>
   <h3>Type de cuisine : {{cuisine}}</h3>
   <h3>situé a : {{borough}}</h3>
-  
+  <h3>situé a : {{grades}}</h3>
+  <div>
+    <img src="@/assets/images-restaus/image1.jpg" />">
+  </div>
 
   
   </div>
@@ -25,6 +28,10 @@ export default {
     // pour le nom de la restau
     name() {
       return this.$route.params.name
+      
+    },
+    grades() {
+      return this.$route.params.grades
       
     },
     // pour la cuisine 

@@ -138,7 +138,7 @@
         <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{ item.cuisine }}</md-table-cell>
         <md-table-cell md-label="Details">
           <router-link
-            :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough"
+            :to="'restaurant/'+item._id+'/'+item.name+'/'+item.cuisine+'/'+item.borough+'/'+item.grades[0]"
           >Details</router-link>
         </md-table-cell>
         <md-table-cell md-label="Supprimer">
