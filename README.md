@@ -12,3 +12,4 @@
 ## Description
 
 ##### Le but de ce projet est de développer une appplication VueJS à l'aide de la base de données MongoDB.. 
+ps: la base de données est hebergé en ligne (pas besoin de la lancer en local au lancement du serveur CRUD)
