@@ -5,7 +5,7 @@ var assert = require('assert');
 //var url = 'mongodb://localhost:27017/test';
 
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb+srv://test:test@cluster0-d9c8u.mongodb.net/test';
 
 // Database Name
 const dbName = 'test';
